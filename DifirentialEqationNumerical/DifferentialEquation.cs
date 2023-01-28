@@ -14,11 +14,6 @@ namespace DifirentialEqationNumerical
 
         public static IEnumerable<IPoint> CalculateDifferentialEquation_EnumerableReturn(string expression, double x0, double step, int stepAmounts)
         {
-
-            ScriptEngine engine = Python.CreateEngine();
-            ScriptScope scope = engine.CreateScope();
-
-
             var resultMass = new System.Collections.ObjectModel.ObservableCollection<IPoint>();
 
 
@@ -26,7 +21,7 @@ namespace DifirentialEqationNumerical
         }
 
 
-		static void integrfunEiler(double x0, double y0, int n, double[] y1, double h)
+		static void integrfunEiler(string expression,double x0, double y0, int n, double[] y1, double h)
 		{
 			double[] x1 = new double[n];
 			double t = 0;
@@ -38,7 +33,7 @@ namespace DifirentialEqationNumerical
 			for (int i = 1; i <= n; i++)
 			{
 				t += h;
-				y1[i] = y1[i - 1] + h; //* fun2(y1[i - 1], x1[i - 1], t * y1[i - 1], k, m);
+				y1[i] = y1[i - 1] + h* PythonCalculationClass.PythonCalculation(expression, x1[i - 1]); //* fun2(y1[i - 1], x1[i - 1], t * y1[i - 1], k, m);
 			}
 
 			t = 0;

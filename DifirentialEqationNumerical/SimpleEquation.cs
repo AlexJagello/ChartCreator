@@ -14,31 +14,23 @@ namespace DifirentialEqationNumerical
 
         public static void CalculateSimpleEquation(string expression,ref double[] x, ref double[] y, double x0, double step, int stepAmounts)
         {
-            ScriptEngine engine = Python.CreateEngine();
-            ScriptScope scope = engine.CreateScope();
-
             for (int i = 0; i < stepAmounts; i++)
             {
                 var xi = x0 + i * step;
                 x[i] = xi;
-                y[i] = PythonCalculation(engine, scope, expression, xi);
+                y[i] = PythonCalculationClass.PythonCalculation(expression, xi);
             }
         }
 
         public static double[,] CalculateSimpleEquation_ArrayReturn(string expression, double x0, double step, int stepAmounts)
         {
-
-            ScriptEngine engine = Python.CreateEngine();
-            ScriptScope scope = engine.CreateScope();
-
-
             var resultMass = new double[2, stepAmounts];
 
             for(int i = 0; i < stepAmounts; i++)
             {
                 var xi = x0 + i * step;
                 resultMass[0, i] = xi;
-                resultMass[1, i] = PythonCalculation(engine, scope, expression, xi);
+                resultMass[1, i] = PythonCalculationClass.PythonCalculation(expression, xi);
             }
 
             return resultMass;
@@ -47,17 +39,13 @@ namespace DifirentialEqationNumerical
         public static IPoint[] CalculateSimpleEquation(string expression, double x0, double step, int stepAmounts)
         {
 
-            ScriptEngine engine = Python.CreateEngine();
-            ScriptScope scope = engine.CreateScope();
-
-
             var resultMass = new Point[stepAmounts];
 
             for (int i = 0; i < stepAmounts; i++)
             {
                 var xi = x0 + i * step;
 
-                var yi = PythonCalculation(engine, scope, expression, xi);
+                var yi = PythonCalculationClass.PythonCalculation(expression, xi);
 
                 resultMass[i] = new Point(xi, yi);
                
@@ -69,18 +57,13 @@ namespace DifirentialEqationNumerical
 
         public static IEnumerable<IPoint> CalculateSimpleEquation_EnumerableReturn(string expression, double x0, double step, int stepAmounts)
         {
-
-            ScriptEngine engine = Python.CreateEngine();
-            ScriptScope scope = engine.CreateScope();
-
-
             var resultMass = new System.Collections.ObjectModel.ObservableCollection<IPoint>();
 
             for (int i = 0; i < stepAmounts; i++)
             {
                 var xi = x0 + i * step;
 
-                var yi = PythonCalculation(engine, scope, expression, xi);
+                var yi = PythonCalculationClass.PythonCalculation(expression, xi);
 
                 resultMass.Add(new Point(xi, yi));
 
@@ -102,13 +85,7 @@ namespace DifirentialEqationNumerical
         }
 
 
-        private static double PythonCalculation(ScriptEngine engine, ScriptScope scope, string expression, double x)
-        {
-            scope.SetVariable("x", x);
-            engine.Execute("from math import *\n" + expression, scope);
-            dynamic res = scope.GetVariable("y");
-            return Convert.ToDouble(res);
-        }
+     
 
     }
 }
