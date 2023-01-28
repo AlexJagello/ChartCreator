@@ -105,7 +105,7 @@ namespace DifirentialEqationNumerical
         private static double PythonCalculation(ScriptEngine engine, ScriptScope scope, string expression, double x)
         {
             scope.SetVariable("x", x);
-            engine.Execute("import math\n"+ expression, scope);
+            engine.Execute("from math import *\n" + expression, scope);
             dynamic res = scope.GetVariable("y");
             return Convert.ToDouble(res);
         }
