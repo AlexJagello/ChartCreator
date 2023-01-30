@@ -34,6 +34,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -57,7 +58,10 @@
                     <Label Grid.Row="1" Content="Amount of steps" Grid.Column="3"/>
                     <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding DataInitial.AmountOfSteps}"/>
 
-            <Button Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Content="Draw" Command="{Binding SolveCommand}"/>
+                    <Label Grid.Row="1" Content="y0" Grid.Column="4"/>
+                    <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding DataInitial.Y0}"/>  
+
+            <Button Grid.Column="5" Grid.Row="1" Grid.RowSpan="2" Content="Draw" Command="{Binding SolveCommand}"/>
                 </Grid>
         <lvc:CartesianChart AnimationsSpeed="0:0:0.5"  VerticalContentAlignment="Stretch" Height="354" Grid.Row="1">
             <lvc:CartesianChart.DataTooltip>

@@ -92,13 +92,38 @@ namespace NumericalSolutionOfDifferentialEquations
 
         public void ClculationWithPython(object e)
         {
-           var points = DifirentialEqationNumerical.SimpleEquation.CalculateSimpleEquation_EnumerableReturn(dataInitial.Expression, dataInitial.X0, dataInitial.Step, dataInitial.AmountOfSteps);
+            try
+            {
+                dataReturn.ChartValues.Clear();
 
-            dataReturn.ChartValues.Clear();
-            foreach (var point in points)
-                dataReturn.ChartValues.Add(new Point(point.X, point.Y));
-            
-            Text = dataReturn.ToString();
+                switch (Type)
+                {
+
+                    case Models.Type.Simple:
+                        {
+                            var points = DifirentialEqationNumerical.SimpleEquation.CalculateSimpleEquation_EnumerableReturn(dataInitial.Expression, dataInitial.X0, dataInitial.Step, dataInitial.AmountOfSteps);
+
+                            foreach (var point in points)
+                                dataReturn.ChartValues.Add(new Point(point.X, point.Y));
+                            break;
+                        }
+                    case Models.Type.FirstOrderDifferentialEquation:
+                        {
+                            var points = DifirentialEqationNumerical.DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn(dataInitial.Expression, dataInitial.X0, ((InitialDataModel)dataInitial).Y0, dataInitial.Step, dataInitial.AmountOfSteps);
+
+                            foreach (var point in points)
+                                dataReturn.ChartValues.Add(new Point(point.X, point.Y));
+                            break;
+                        }
+
+                }
+
+
+                Text = dataReturn.ToString();
+            }catch (Exception ex)
+            {
+
+            }
         }
 
 

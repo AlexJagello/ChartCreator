@@ -14,6 +14,7 @@ namespace NumericalSolutionOfDifferentialEquations.Models
         private double x0 = 0;
         private double step = 0.1;
         private int amountOfSteps = 100;
+        private double y0 = 1;
 
         private string expression = "y=2*x+3";
 
@@ -61,6 +62,18 @@ namespace NumericalSolutionOfDifferentialEquations.Models
                 OnPropertyChanged();
             }
         }
+
+        public double Y0
+        {
+            get => y0;
+            set
+            {
+                if (y0 == value) return;
+                y0 = value;
+                OnPropertyChanged();
+            }
+        }
+
 
 
         public event PropertyChangedEventHandler PropertyChanged;
