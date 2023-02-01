@@ -8,6 +8,12 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:TypeEnum="clr-namespace:NumericalSolutionOfDifferentialEquations.Models"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance local:MainViewModel}"
         Title="MainWindow" Height="550" Width="1200">
@@ -18,6 +24,7 @@
                 <x:Type TypeName="TypeEnum:TypeNumericalSolve"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -26,7 +33,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="97"/>
             <RowDefinition Height="0"/>
             <RowDefinition Height="5.5*"/>
         </Grid.RowDefinitions>
@@ -41,23 +48,23 @@
                         <ColumnDefinition Width="150"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="25"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Content="Epression"/>
-                    <TextBox Grid.Row="1" Text="{Binding DataInitial.Expression}"/>
+                    <Label Grid.Row="0" Content="Epression" Margin="5,0,5,0" />
+                    <TextBox Grid.Row="1" Text="{Binding DataInitial.Expression}" Margin="5,0,5,0" HorizontalContentAlignment="Stretch"/>
 
-                    <Label Grid.Row="0" Content="X0" Grid.Column="1"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DataInitial.X0}" />
+                    <Label Grid.Row="0" Content="X0" Grid.Column="1" Margin="5,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DataInitial.X0}" Margin="5,0,5,0"  HorizontalContentAlignment="Stretch"/>
 
-                    <Label Grid.Row="0" Content="Step" Grid.Column="2"/>
-                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding DataInitial.Step}" />
+                    <Label Grid.Row="0" Content="Step" Grid.Column="2" Margin="5,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding DataInitial.Step}" Margin="5,0,5,0"  HorizontalContentAlignment="Stretch"/>
 
-                    <Label Grid.Row="0" Content="Amount of steps" Grid.Column="3"/>
-                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding DataInitial.AmountOfSteps}"/>
+                    <Label Grid.Row="0" Content="Amount of steps" Grid.Column="3" Margin="5,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding DataInitial.AmountOfSteps}" Margin="5,0,5,0"  HorizontalContentAlignment="Stretch"/>
 
-                    <Button Grid.Column="5" Grid.Row="0" Grid.RowSpan="2" Content="Draw" Command="{Binding SolveCommand}"/>
+                    <Button Grid.Column="5" Grid.Row="0" Grid.RowSpan="2" Content="Draw" Margin="5,0,5,0" Command="{Binding SolveCommand}"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Differential equation">
@@ -76,23 +83,23 @@
                         <RowDefinition Height="25"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Content="Epression"/>
-                    <TextBox Grid.Row="1" Text="{Binding DataInitialDiffEquation.Expression}"/>
+                    <Label Grid.Row="0" Content="Epression" Margin="5,0,5,0"/>
+                    <TextBox Grid.Row="1" Text="{Binding DataInitialDiffEquation.Expression}" Margin="5,0,5,0" />
 
-                    <Label Grid.Row="0" Content="X0" Grid.Column="1"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DataInitialDiffEquation.X0}" />
+                    <Label Grid.Row="0" Content="X0" Grid.Column="1" Margin="5,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DataInitialDiffEquation.X0}" Margin="5,0,5,0"/>
 
-                    <Label Grid.Row="0" Content="Step" Grid.Column="2"/>
-                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding DataInitialDiffEquation.Step}" />
+                    <Label Grid.Row="0" Content="Step" Grid.Column="2" Margin="5,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding DataInitialDiffEquation.Step}" Margin="5,0,5,0"/>
 
-                    <Label Grid.Row="0" Content="Amount of steps" Grid.Column="3"/>
-                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding DataInitialDiffEquation.AmountOfSteps}"/>
+                    <Label Grid.Row="0" Content="Amount of steps" Grid.Column="3" Margin="5,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding DataInitialDiffEquation.AmountOfSteps}" Margin="5,0,5,0"/>
 
-                    <Label Grid.Row="0" Content="y0" Grid.Column="4"/>
-                    <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding DataInitialDiffEquation.Y0}"/>
-                    
-                    <Label Grid.Row="0" Content="Numerical solution method" Grid.Column="5"/>
-                    <ComboBox Grid.Row="1" Grid.Column="5" ItemsSource="{Binding Source={StaticResource typeNumericalSolve}}"  SelectedItem="{Binding DataInitialDiffEquation.TypeNumericalSolve}"/>
+                    <Label Grid.Row="0" Content="y0" Grid.Column="4" Margin="5,0,5,0"/>
+                    <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding DataInitialDiffEquation.Y0}" Margin="5,0,5,0"/>
+
+                    <Label Grid.Row="0" Content="Numerical solution method" Grid.Column="5" Margin="5,0,5,0"/>
+                    <ComboBox Grid.Row="1" Grid.Column="5" ItemsSource="{Binding Source={StaticResource typeNumericalSolve}}"  SelectedItem="{Binding DataInitialDiffEquation.TypeNumericalSolve}" Margin="5,0,5,0"/>
 
                     <Button Grid.Column="6" Grid.Row="0" Grid.RowSpan="2" Content="Draw" Command="{Binding SolveDiffEquationCommand}"/>
                 </Grid>
@@ -102,45 +109,50 @@
         <StackPanel Grid.Row="1" >
             <Button Content="Save" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
         </StackPanel>
-        
-        <lvc:CartesianChart AnimationsSpeed="0:0:0.5"  VerticalContentAlignment="Stretch" Grid.Row="2" Margin="5">
-            <lvc:CartesianChart.DataTooltip>
-                <dataLabel:PointDataLabel/>
-            </lvc:CartesianChart.DataTooltip>
-            <lvc:CartesianChart.Series>
-                <lvc:LineSeries Values="{Binding DataReturn.ChartValues}"
+
+        <Border BorderBrush="Gray" Grid.Row="2" BorderThickness="1" CornerRadius="2" Margin="6">
+            <lvc:CartesianChart AnimationsSpeed="0:0:0.5"  VerticalContentAlignment="Stretch" Grid.Row="2" Margin="5" >
+                <lvc:CartesianChart.DataTooltip>
+                    <dataLabel:PointDataLabel/>
+                </lvc:CartesianChart.DataTooltip>
+                <lvc:CartesianChart.Series>
+                    <lvc:LineSeries Values="{Binding DataReturn.ChartValues}"
                                     PointGeometrySize="5"
                                     LineSmoothness="0.25"
-                                    StrokeThickness="1" 
-                                    Stroke="#F34336"
+                                    StrokeThickness="2" 
+                                    
+                                    Stroke="Blue"
                                     Fill="Transparent"/>
-            </lvc:CartesianChart.Series>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis    
+                </lvc:CartesianChart.Series>
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis    
                               MaxValue="{Binding AxisMax}" 
                               MinValue="{Binding AxisMin}"
                               Unit="{Binding AxisUnit}">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="{Binding AxisStep}" />
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis
+                        <lvc:Axis.Separator>
+                            <lvc:Separator Step="{Binding AxisStep}" StrokeThickness="0.2"/>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis
                               MaxValue="{Binding AxisMax}" 
                               MinValue="{Binding AxisMin}"
                               Unit="{Binding AxisUnit}">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator Step="{Binding AxisStep}" />
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
+                        <lvc:Axis.Separator>
+                            <lvc:Separator Step="{Binding AxisStep}" StrokeThickness="0.2"/>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart>
+        </Border>
 
-        <Grid Grid.Column="1" Grid.Row="2">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                <TextBox Text="{Binding Text}"/>
-            </ScrollViewer>
+        <Grid Grid.Column="1" Grid.Row="2" Margin="6">
+            <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="2">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                    <TextBox Text="{Binding Text}" Margin="5"/>
+                </ScrollViewer>
+            </Border>
         </Grid>
     </Grid>
 </Window>
