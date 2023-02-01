@@ -14,4 +14,11 @@ namespace NumericalSolutionOfDifferentialEquations.Models
         [Description("First order differential equation")]
         FirstOrderDifferentialEquation
     }
+
+    public enum TypeNumericalSolve
+    {
+        Eiler,
+        ImprovedEiler,
+        RynkeKuty
+    }
 }

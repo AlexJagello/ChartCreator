@@ -1,5 +1,4 @@
-﻿using NumericalSolutionOfDifferentialEquations.Models.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NumericalSolutionOfDifferentialEquations.Models
 {
-    public class InitialDataModel : IDataInitial, INotifyPropertyChanged
+    public class InitialDataModel :  INotifyPropertyChanged
     {
         private double x0 = 0;
         private double step = 0.1;
@@ -63,16 +62,7 @@ namespace NumericalSolutionOfDifferentialEquations.Models
             }
         }
 
-        public double Y0
-        {
-            get => y0;
-            set
-            {
-                if (y0 == value) return;
-                y0 = value;
-                OnPropertyChanged();
-            }
-        }
+     
 
 
 

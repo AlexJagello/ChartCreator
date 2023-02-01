@@ -12,58 +12,98 @@
         d:DataContext="{d:DesignInstance local:MainViewModel}"
         Title="MainWindow" Height="550" Width="1200">
     <Window.Resources>
-        <ObjectDataProvider x:Key="type" MethodName="GetValues"
+        <ObjectDataProvider x:Key="typeNumericalSolve" MethodName="GetValues"
                             ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="TypeEnum:Type"/>
+                <x:Type TypeName="TypeEnum:TypeNumericalSolve"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.3*"/>
+
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="0"/>
             <RowDefinition Height="5.5*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.ColumnSpan="2">
+        <TabControl Grid.ColumnSpan="2">
+            <TabItem Header="Simple">
+                <Grid Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="150"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition Height="25"/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Content="Type"/>
-                    <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Source={StaticResource type}}" SelectedItem="{Binding Type}"/>
+                    <Label Grid.Row="0" Content="Epression"/>
+                    <TextBox Grid.Row="1" Text="{Binding DataInitial.Expression}"/>
 
-                    <Label Grid.Row="1" Content="Epression"/>
-                    <TextBox Grid.Row="2" Text="{Binding DataInitial.Expression}"/>
+                    <Label Grid.Row="0" Content="X0" Grid.Column="1"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DataInitial.X0}" />
 
-                    <Label Grid.Row="1" Content="X0" Grid.Column="1"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DataInitial.X0}" />
+                    <Label Grid.Row="0" Content="Step" Grid.Column="2"/>
+                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding DataInitial.Step}" />
 
-                    <Label Grid.Row="1" Content="Step" Grid.Column="2"/>
-                    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding DataInitial.Step}" />
+                    <Label Grid.Row="0" Content="Amount of steps" Grid.Column="3"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding DataInitial.AmountOfSteps}"/>
 
-                    <Label Grid.Row="1" Content="Amount of steps" Grid.Column="3"/>
-                    <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding DataInitial.AmountOfSteps}"/>
-
-                    <Label Grid.Row="1" Content="y0" Grid.Column="4"/>
-                    <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding DataInitial.Y0}"/>  
-
-            <Button Grid.Column="5" Grid.Row="1" Grid.RowSpan="2" Content="Draw" Command="{Binding SolveCommand}"/>
+                    <Button Grid.Column="5" Grid.Row="0" Grid.RowSpan="2" Content="Draw" Command="{Binding SolveCommand}"/>
                 </Grid>
-        <lvc:CartesianChart AnimationsSpeed="0:0:0.5"  VerticalContentAlignment="Stretch" Height="354" Grid.Row="1">
+            </TabItem>
+            <TabItem Header="Differential equation">
+                <Grid Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="150"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="25"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Content="Epression"/>
+                    <TextBox Grid.Row="1" Text="{Binding DataInitialDiffEquation.Expression}"/>
+
+                    <Label Grid.Row="0" Content="X0" Grid.Column="1"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding DataInitialDiffEquation.X0}" />
+
+                    <Label Grid.Row="0" Content="Step" Grid.Column="2"/>
+                    <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding DataInitialDiffEquation.Step}" />
+
+                    <Label Grid.Row="0" Content="Amount of steps" Grid.Column="3"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding DataInitialDiffEquation.AmountOfSteps}"/>
+
+                    <Label Grid.Row="0" Content="y0" Grid.Column="4"/>
+                    <TextBox Grid.Row="1" Grid.Column="4" Text="{Binding DataInitialDiffEquation.Y0}"/>
+                    
+                    <Label Grid.Row="0" Content="Numerical solution method" Grid.Column="5"/>
+                    <ComboBox Grid.Row="1" Grid.Column="5" ItemsSource="{Binding Source={StaticResource typeNumericalSolve}}"  SelectedItem="{Binding DataInitialDiffEquation.TypeNumericalSolve}"/>
+
+                    <Button Grid.Column="6" Grid.Row="0" Grid.RowSpan="2" Content="Draw" Command="{Binding SolveDiffEquationCommand}"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        
+        <StackPanel Grid.Row="1" >
+            <Button Content="Save" Height="30" Width="30" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5"/>
+        </StackPanel>
+        
+        <lvc:CartesianChart AnimationsSpeed="0:0:0.5"  VerticalContentAlignment="Stretch" Grid.Row="2" Margin="5">
             <lvc:CartesianChart.DataTooltip>
                 <dataLabel:PointDataLabel/>
             </lvc:CartesianChart.DataTooltip>
@@ -97,7 +137,7 @@
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
 
-        <Grid Grid.Column="1" Grid.Row="1">
+        <Grid Grid.Column="1" Grid.Row="2">
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                 <TextBox Text="{Binding Text}"/>
             </ScrollViewer>

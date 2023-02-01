@@ -4,7 +4,6 @@ using LiveCharts.Configurations;
 using Microsoft.Scripting.Hosting;
 using NumericalSolutionOfDifferentialEquations.Command;
 using NumericalSolutionOfDifferentialEquations.Models;
-using NumericalSolutionOfDifferentialEquations.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,36 +19,26 @@ namespace NumericalSolutionOfDifferentialEquations
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private IDataInitial dataInitial;
-        private IDataReturn dataReturn;
+        private InitialDataModel dataInitial;
+        private ReturnDataModel dataReturn;
+        private InitialDataModelDiffEquation dataInitialDiffEquation;
         private string text = "";
 
         private ICommand solveCommand;
-        private Models.Type type;
+        private ICommand solveDiffEquationCommand;
 
 
 
         public MainViewModel()
         {
-            solveCommand = new RelayCommand(ClculationWithPython);
+            solveCommand = new RelayCommand(ClculationSimpleEquationWithPython);
+            solveDiffEquationCommand = new RelayCommand(ClculationDiffEquationWithPython);
             dataInitial = new InitialDataModel();
+            dataInitialDiffEquation = new InitialDataModelDiffEquation();
             dataReturn = new ReturnDataModel();         
         }
 
-
-
-        public Models.Type Type
-        {
-            get => type;
-            set
-            {
-                if (type == value) return;
-                type = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public IDataInitial DataInitial
+        public InitialDataModel DataInitial
         {
             get => dataInitial;
             set
@@ -60,7 +49,19 @@ namespace NumericalSolutionOfDifferentialEquations
             }
         }
 
-        public IDataReturn DataReturn
+
+        public InitialDataModelDiffEquation DataInitialDiffEquation
+        {
+            get => dataInitialDiffEquation;
+            set
+            {
+                if (dataInitialDiffEquation == value) return;
+                dataInitialDiffEquation = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ReturnDataModel DataReturn
         {
             get => dataReturn;
             set
@@ -87,46 +88,58 @@ namespace NumericalSolutionOfDifferentialEquations
             get { return solveCommand; }
         }
 
+        public ICommand SolveDiffEquationCommand
+        {
+            get { return solveDiffEquationCommand; }
+        }
 
 
-
-        public void ClculationWithPython(object e)
+        public void ClculationSimpleEquationWithPython(object e)
         {
             try
             {
-                dataReturn.ChartValues.Clear();
-
-                switch (Type)
-                {
-
-                    case Models.Type.Simple:
-                        {
-                            var points = DifirentialEqationNumerical.SimpleEquation.CalculateSimpleEquation_EnumerableReturn(dataInitial.Expression, dataInitial.X0, dataInitial.Step, dataInitial.AmountOfSteps);
-
-                            foreach (var point in points)
-                                dataReturn.ChartValues.Add(new Point(point.X, point.Y));
-                            break;
-                        }
-                    case Models.Type.FirstOrderDifferentialEquation:
-                        {
-                            var points = DifirentialEqationNumerical.DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn(dataInitial.Expression, dataInitial.X0, ((InitialDataModel)dataInitial).Y0, dataInitial.Step, dataInitial.AmountOfSteps);
-
-                            foreach (var point in points)
-                                dataReturn.ChartValues.Add(new Point(point.X, point.Y));
-                            break;
-                        }
-
-                }
-
-
-                Text = dataReturn.ToString();
-            }catch (Exception ex)
+                AddedPointsToChart(DifirentialEqationNumerical.SimpleEquation.CalculateSimpleEquation_EnumerableReturn(dataInitial.Expression, dataInitial.X0, dataInitial.Step, dataInitial.AmountOfSteps));
+            }
+            catch (Exception ex)
             {
 
             }
         }
 
+        public void ClculationDiffEquationWithPython(object e)
+        {
+            try
+            {
+                switch (dataInitialDiffEquation.TypeNumericalSolve)
+                {
+                    case TypeNumericalSolve.Eiler:
+                        AddedPointsToChart(DifirentialEqationNumerical.DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn_Eiler(dataInitialDiffEquation.Expression, dataInitialDiffEquation.X0, dataInitialDiffEquation.Y0, dataInitialDiffEquation.Step, dataInitialDiffEquation.AmountOfSteps));
+                        break;
+                    case TypeNumericalSolve.ImprovedEiler:
+                        AddedPointsToChart(DifirentialEqationNumerical.DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn_ImpEiler(dataInitialDiffEquation.Expression, dataInitialDiffEquation.X0, dataInitialDiffEquation.Y0, dataInitialDiffEquation.Step, dataInitialDiffEquation.AmountOfSteps));
+                        break;
+                    case TypeNumericalSolve.RynkeKuty:
+                        AddedPointsToChart(DifirentialEqationNumerical.DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn_RyngeKytte(dataInitialDiffEquation.Expression, dataInitialDiffEquation.X0, dataInitialDiffEquation.Y0, dataInitialDiffEquation.Step, dataInitialDiffEquation.AmountOfSteps));
+                        break;
 
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void AddedPointsToChart(IEnumerable<DifirentialEqationNumerical.Models.IPoint> points)
+        {
+            dataReturn.ChartValues.Clear();
+
+            foreach (var point in points)
+                dataReturn.ChartValues.Add(new Point(point.X, point.Y));
+
+            Text = dataReturn.ToString();
+        }
 
 
 

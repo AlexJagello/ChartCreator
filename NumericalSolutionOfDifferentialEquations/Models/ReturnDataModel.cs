@@ -1,6 +1,5 @@
 ﻿using LiveCharts;
 using LiveCharts.Configurations;
-using NumericalSolutionOfDifferentialEquations.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NumericalSolutionOfDifferentialEquations.Models
 {
-    public class ReturnDataModel : IDataReturn, INotifyPropertyChanged
+    public class ReturnDataModel : INotifyPropertyChanged
     {
         private ChartValues<IPoint> chartValues { get; set; }
 

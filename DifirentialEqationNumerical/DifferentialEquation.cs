@@ -11,15 +11,7 @@ namespace DifirentialEqationNumerical
 {
     public static class DifferentialEquation
     {
-
-        public static IEnumerable<IPoint> CalculateDifferentialEquation_EnumerableReturn(string expression, double x0, double y0, double step, int stepAmounts)
-        {
-
-			return integrfunImpEilerX(expression, x0, 1, stepAmounts, step);
-        }
-
-
-		static IEnumerable<IPoint> integrfunEiler(string expression, double x0, double y0, int stepAmounts, double h)
+	    public static IEnumerable<IPoint> CalculateDifferentialEquation_EnumerableReturn_Eiler(string expression, double x0, double y0, double h, int stepAmounts)
 		{
 
 			var resultMass = new System.Collections.ObjectModel.ObservableCollection<IPoint>();
@@ -35,34 +27,34 @@ namespace DifirentialEqationNumerical
 			return resultMass;
 		}
 
-		static IEnumerable<IPoint> integrfunImpEilerX(string expression, double x0, double y0, int n, double h)
+		public static IEnumerable<IPoint> CalculateDifferentialEquation_EnumerableReturn_ImpEiler(string expression, double x0, double y0, double h, int stepAmounts)
 		{
 			var resultMass = new System.Collections.ObjectModel.ObservableCollection<IPoint>();
 
-			for (int i = 0; i <= n; i++)
+			for (int i = 0; i < stepAmounts; i++)
 				resultMass.Add(new Point(x0 + i * h, 0));
 
 			resultMass[0].Y = y0;
 
-			for (int i = 1; i <= n; i++)
+			for (int i = 1; i < stepAmounts; i++)
 				resultMass[i].Y = resultMass[i - 1].Y + h * PythonCalculationClass.PythonCalculation_DifferentialEquation(expression, resultMass[i - 1].X + (h / 2) *
 					PythonCalculationClass.PythonCalculation_DifferentialEquation(expression, resultMass[i - 1].X, resultMass[i - 1].Y), resultMass[i - 1].Y + (h / 2));
 
 			return resultMass;
 		}
 
-		static IEnumerable<IPoint> integrfunRynge_KytteX(string expression, double x0, double y0, int n,  double h)
+		public static IEnumerable<IPoint> CalculateDifferentialEquation_EnumerableReturn_RyngeKytte(string expression, double x0, double y0,  double h, int stepAmounts)
 		{
 			var resultMass = new System.Collections.ObjectModel.ObservableCollection<IPoint>();
 
-			for (int i = 0; i <= n; i++)
+			for (int i = 0; i < stepAmounts; i++)
 				resultMass.Add(new Point(x0 + i * h, 0));
 
 
 			double k1, k2, k3, k4;
 
 			resultMass[0].Y = y0;
-			for (int i = 1; i <= n; i++)
+			for (int i = 1; i < stepAmounts; i++)
 			{
 				k1 = PythonCalculationClass.PythonCalculation_DifferentialEquation(expression, resultMass[i - 1].X, resultMass[i - 1].Y);
 				k2 = PythonCalculationClass.PythonCalculation_DifferentialEquation(expression, resultMass[i - 1].X + h * k1 / 2, resultMass[i - 1].Y + h / 2);
