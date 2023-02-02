@@ -19,8 +19,4 @@
     <ProjectReference Include="..\DifirentialEqationNumerical\DifirentialEqationNumerical.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Double\" />
-  </ItemGroup>
-
 </Project>
