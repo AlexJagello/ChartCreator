@@ -1,4 +1,5 @@
-﻿using IronPython.Hosting;
+﻿using DifirentialEqationNumerical;
+using IronPython.Hosting;
 using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Wpf;
@@ -149,7 +150,14 @@ namespace NumericalSolutionOfDifferentialEquations
         {
             try
             {
-                AddedPointsToChart(DifirentialEqationNumerical.SimpleEquation.CalculateSimpleEquation_EnumerableReturn(dataInitial.Expression, dataInitial.X0, dataInitial.Step, dataInitial.AmountOfSteps));
+                AddedPointsToChart(
+                    SimpleEquation.CalculateSimpleEquation_EnumerableReturn(
+                        dataInitial.Expression,
+                        dataInitial.X0,
+                        dataInitial.Step,
+                        dataInitial.AmountOfSteps,
+                        PythonCalculationClass.PythonCalculation
+                        ));
                 OneToOneClickMethod();
             }
             catch (Exception ex)
@@ -165,13 +173,37 @@ namespace NumericalSolutionOfDifferentialEquations
                 switch (dataInitialDiffEquation.TypeNumericalSolve)
                 {
                     case TypeNumericalSolve.Eiler:
-                        AddedPointsToChart(DifirentialEqationNumerical.DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn_Eiler(dataInitialDiffEquation.Expression, dataInitialDiffEquation.X0, dataInitialDiffEquation.Y0, dataInitialDiffEquation.Step, dataInitialDiffEquation.AmountOfSteps));
+                        AddedPointsToChart(
+                            DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn_Eiler(
+                                dataInitialDiffEquation.Expression, 
+                                dataInitialDiffEquation.X0,
+                                dataInitialDiffEquation.Y0, 
+                                dataInitialDiffEquation.Step, 
+                                dataInitialDiffEquation.AmountOfSteps,
+                                PythonCalculationClass.PythonCalculation_DifferentialEquation
+                                ));
                         break;
                     case TypeNumericalSolve.ImprovedEiler:
-                        AddedPointsToChart(DifirentialEqationNumerical.DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn_ImpEiler(dataInitialDiffEquation.Expression, dataInitialDiffEquation.X0, dataInitialDiffEquation.Y0, dataInitialDiffEquation.Step, dataInitialDiffEquation.AmountOfSteps));
+                        AddedPointsToChart(
+                            DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn_ImpEiler(
+                                dataInitialDiffEquation.Expression, 
+                                dataInitialDiffEquation.X0, 
+                                dataInitialDiffEquation.Y0, 
+                                dataInitialDiffEquation.Step, 
+                                dataInitialDiffEquation.AmountOfSteps,
+                                PythonCalculationClass.PythonCalculation_DifferentialEquation
+                                ));
                         break;
                     case TypeNumericalSolve.RynkeKuty:
-                        AddedPointsToChart(DifirentialEqationNumerical.DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn_RyngeKytte(dataInitialDiffEquation.Expression, dataInitialDiffEquation.X0, dataInitialDiffEquation.Y0, dataInitialDiffEquation.Step, dataInitialDiffEquation.AmountOfSteps));
+                        AddedPointsToChart(
+                            DifferentialEquation.CalculateDifferentialEquation_EnumerableReturn_RyngeKytte(
+                                dataInitialDiffEquation.Expression, 
+                                dataInitialDiffEquation.X0, 
+                                dataInitialDiffEquation.Y0, 
+                                dataInitialDiffEquation.Step, 
+                                dataInitialDiffEquation.AmountOfSteps,
+                                PythonCalculationClass.PythonCalculation_DifferentialEquation
+                                ));
                         break;
 
                 }
