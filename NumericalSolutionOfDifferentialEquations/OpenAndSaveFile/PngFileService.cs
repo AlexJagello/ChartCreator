@@ -23,13 +23,18 @@ namespace NumericalSolutionOfDifferentialEquations.OpenAndSaveFile
                 DisableAnimations = true,
                 Width = 600,
                 Height = 400,
-                AxisX = { new Axis() { MaxValue = pointsList[pointsList.Count - 1].X, MinValue = pointsList[0].X } },
-                AxisY = { new Axis() { MaxValue = pointsList[pointsList.Count - 1].Y, MinValue = pointsList[0].Y } },
+                AxisX = { new Axis() { MaxValue = pointsList.Last().X, MinValue = pointsList.First().X } },
+                AxisY = { new Axis() { MaxValue = pointsList.Max(max => max.Y), MinValue = pointsList.Min(min => min.Y) } },
                 Series = new SeriesCollection
                 {
                     new LineSeries
                     {
-                        Values = pointsList
+                        Values = pointsList,
+                        PointGeometrySize=5,
+                        LineSmoothness=0.25,
+                        StrokeThickness=2,
+                        Stroke= Brushes.Blue,
+                        Fill=Brushes.Transparent,
                     }
 
                 }

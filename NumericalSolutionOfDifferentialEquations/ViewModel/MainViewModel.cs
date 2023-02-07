@@ -227,8 +227,8 @@ namespace NumericalSolutionOfDifferentialEquations
             {
                 ChartSettingsModel.AxisMinX = dataReturn.ChartValues.First().X;
                 ChartSettingsModel.AxisMaxX = dataReturn.ChartValues.Last().X;
-                ChartSettingsModel.AxisMinY = dataReturn.ChartValues.First().Y;
-                ChartSettingsModel.AxisMaxY = dataReturn.ChartValues.Last().Y;
+                ChartSettingsModel.AxisMinY = dataReturn.ChartValues.Min(min => min.Y);
+                ChartSettingsModel.AxisMaxY = dataReturn.ChartValues.Max(max => max.Y);
             }
             catch
             {
