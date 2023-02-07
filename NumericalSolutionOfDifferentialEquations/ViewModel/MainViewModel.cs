@@ -8,6 +8,7 @@ using Microsoft.Scripting.Hosting;
 using NumericalSolutionOfDifferentialEquations.Command;
 using NumericalSolutionOfDifferentialEquations.Commands;
 using NumericalSolutionOfDifferentialEquations.Models;
+using NumericalSolutionOfDifferentialEquations.OpenAndSaveFile;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,13 +27,17 @@ using Point = NumericalSolutionOfDifferentialEquations.Models.Point;
 
 namespace NumericalSolutionOfDifferentialEquations
 {
-    public class MainViewModel : INotifyPropertyChanged
+    internal class MainViewModel : INotifyPropertyChanged
     {
         private InitialDataModel dataInitial;
         private ReturnDataModel dataReturn;
         private InitialDataModelDiffEquation dataInitialDiffEquation;
         private ChartSettingsModel chartSettingsModel;
         private string text = "";
+
+        private IDialogService dialogService;
+        private ITextFileService textFileService;
+        private IImgFileService imgFileService;
 
         private ICommand solveCommand;
         private ICommand solveDiffEquationCommand;
@@ -42,7 +47,7 @@ namespace NumericalSolutionOfDifferentialEquations
 
 
 
-        public MainViewModel()
+        internal MainViewModel(IDialogService dialogService, ITextFileService textfileService, IImgFileService imgFileService)
         {
             solveCommand = new NoParametersCommand(ClculationSimpleEquationWithPython);
             solveDiffEquationCommand = new NoParametersCommand(ClculationDiffEquationWithPython);
@@ -50,6 +55,9 @@ namespace NumericalSolutionOfDifferentialEquations
             saveCommand = new RelayCommand(SaveChartAndDataMethod);
             loadCommand = new NoParametersCommand(LoadDataMethod);
 
+            this.dialogService = dialogService;
+            this.textFileService = textfileService;
+            this.imgFileService = imgFileService;
 
             dataInitial = new InitialDataModel();
             dataInitialDiffEquation = new InitialDataModelDiffEquation();
@@ -158,7 +166,6 @@ namespace NumericalSolutionOfDifferentialEquations
                         dataInitial.AmountOfSteps,
                         PythonCalculationClass.PythonCalculation
                         ));
-                OneToOneClickMethod();
             }
             catch (Exception ex)
             {
@@ -207,7 +214,6 @@ namespace NumericalSolutionOfDifferentialEquations
                         break;
 
                 }
-                OneToOneClickMethod();
             }
             catch (Exception ex)
             {
@@ -220,8 +226,8 @@ namespace NumericalSolutionOfDifferentialEquations
             try
             {
                 ChartSettingsModel.AxisMinX = dataReturn.ChartValues.First().X;
-                ChartSettingsModel.AxisMinY = dataReturn.ChartValues.First().Y;
                 ChartSettingsModel.AxisMaxX = dataReturn.ChartValues.Last().X;
+                ChartSettingsModel.AxisMinY = dataReturn.ChartValues.First().Y;
                 ChartSettingsModel.AxisMaxY = dataReturn.ChartValues.Last().Y;
             }
             catch
@@ -235,74 +241,58 @@ namespace NumericalSolutionOfDifferentialEquations
         #region SaveRegion
         public void SaveChartAndDataMethod(object obj)
         {
-            string path = "Chart_Image_" + DateTime.Now.ToShortDateString();
-
-            SaveChart(chartSettingsModel.AxisMaxX, chartSettingsModel.AxisMinX, chartSettingsModel.AxisMaxY, chartSettingsModel.AxisMinY, path);
-
-            SaveData(path);
-        }
-
-        private async void SaveData(string pathToFile)
-        {
-            using (FileStream fs = new FileStream(pathToFile + ".json", FileMode.OpenOrCreate))
+            try
             {
-                await JsonSerializer.SerializeAsync(fs, dataReturn.ChartValues);
+                if (dialogService.SaveFileDialog() == true)
+                {
+                    var path = dialogService.FilePath;
+                    
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+
+                    textFileService.Save(path + "/data", dataReturn.ChartValues);
+                    imgFileService.Save(path + "/image", dataReturn.ChartValues);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
-        private void SaveChart(double MaxValueX, double MinValueX, double MaxValueY, double MinValueY, string pathToFile)
-        {
-            var chartToSave = new LiveCharts.Wpf.CartesianChart
-            {
-                DisableAnimations = true,
-                Width = 600,
-                Height = 400,
-                AxisX = { new Axis() { MaxValue = MaxValueX, MinValue = MinValueX } },
-                AxisY = { new Axis() { MaxValue = MaxValueY, MinValue = MinValueY } },
-                Series = new SeriesCollection
-                {
-                    new LineSeries
-                    {
-                        Values = dataReturn.ChartValues
-                    }
-
-                }
-            };
-
-
-            var viewbox = new Viewbox();
-            viewbox.Child = chartToSave;
-            viewbox.Measure(chartToSave.RenderSize);
-            viewbox.Arrange(new Rect(new System.Windows.Point(0, 0), chartToSave.RenderSize));
-            chartToSave.Update(true, true);
-            viewbox.UpdateLayout();
-
-            SaveToPng(chartToSave, pathToFile + ".png");
-        }
-
-        private void SaveToPng(FrameworkElement visual, string fileName)
-        {
-            var encoder = new PngBitmapEncoder();
-            EncodeVisual(visual, fileName, encoder);
-        }
-
-        private static void EncodeVisual(FrameworkElement visual, string fileName, BitmapEncoder encoder)
-        {
-            var bitmap = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-            bitmap.Render(visual);
-            var frame = BitmapFrame.Create(bitmap);
-            encoder.Frames.Add(frame);
-            using (var stream = File.Create(fileName)) encoder.Save(stream);
-        }
+       
 
         #endregion
 
         public void LoadDataMethod()
         {
-            //TO DO 
+            try
+            {
+                if (dialogService.OpenFileDialog() == true)
+                {
+                    AddedPointsToChart(textFileService.Open(dialogService.FilePath));
+     
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
+        private void AddedPointsToChart(IEnumerable<IPoint> points)
+        {
+            dataReturn.ChartValues.Clear();
 
+            foreach (var point in points)
+                dataReturn.ChartValues.Add(new Point(point.X, point.Y));
+
+            OneToOneClickMethod();
+
+            Text = dataReturn.ToString();
+        }
 
         private void AddedPointsToChart(IEnumerable<DifirentialEqationNumerical.Models.IPoint> points)
         {
@@ -310,6 +300,8 @@ namespace NumericalSolutionOfDifferentialEquations
 
             foreach (var point in points)
                 dataReturn.ChartValues.Add(new Point(point.X, point.Y));
+
+            OneToOneClickMethod();
 
             Text = dataReturn.ToString();
         }
@@ -319,8 +311,8 @@ namespace NumericalSolutionOfDifferentialEquations
 
         #region INotifyPropertyChanged
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
