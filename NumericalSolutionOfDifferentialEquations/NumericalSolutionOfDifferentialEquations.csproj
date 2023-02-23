@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DifirentialEqationNumerical\DifirentialEqationNumerical.csproj" />
+    <ProjectReference Include="..\DifirentialEqationNumerical\DifferentialEquationNumerical.csproj" />
   </ItemGroup>
 
 </Project>

@@ -272,8 +272,7 @@ namespace NumericalSolutionOfDifferentialEquations
             {
                 if (dialogService.OpenFileDialog() == true)
                 {
-                    AddedPointsToChart(textFileService.Open(dialogService.FilePath));
-     
+                    AddedPointsToChart(textFileService.Open(dialogService.FilePath));    
                 }
             }
             catch (Exception ex)
@@ -291,6 +290,7 @@ namespace NumericalSolutionOfDifferentialEquations
 
             OneToOneClickMethod();
 
+
             Text = dataReturn.ToString();
         }
 
@@ -303,7 +303,10 @@ namespace NumericalSolutionOfDifferentialEquations
 
             OneToOneClickMethod();
 
-            Text = dataReturn.ToString();
+
+            Text = dataInitial.Expression + "\n"
+              + $"x0={dataInitial.X0}, h={dataInitial.Step}, n={dataInitial.AmountOfSteps}\n\n"
+              + dataReturn.ToString();
         }
 
         #endregion

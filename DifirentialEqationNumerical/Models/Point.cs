@@ -16,5 +16,6 @@ namespace DifirentialEqationNumerical.Models
             X = x;
             Y = y;
         }
+
     }
 }

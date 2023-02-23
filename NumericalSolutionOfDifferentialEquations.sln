@@ -5,7 +5,7 @@ VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalSolutionOfDifferentialEquations", "NumericalSolutionOfDifferentialEquations\NumericalSolutionOfDifferentialEquations.csproj", "{CBB98CC6-60B2-4F65-BE13-A161DB64948C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DifirentialEqationNumerical", "DifirentialEqationNumerical\DifirentialEqationNumerical.csproj", "{FF70212E-B600-4484-B3F2-042555882EFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DifferentialEquationNumerical", "DifirentialEqationNumerical\DifferentialEquationNumerical.csproj", "{FF70212E-B600-4484-B3F2-042555882EFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
